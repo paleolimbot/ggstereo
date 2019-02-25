@@ -1,3 +1,4 @@
+^data-raw$
 ^README\.Rmd$
 ^ggstereo\.Rproj$
 ^\.Rproj\.user$
