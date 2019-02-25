@@ -1,8 +1,21 @@
 
+#' Convert to/from degrees and radians
+#'
+#' @param degrees A value in degrees
+#' @param radians A value in radians
+#'
+#' @export
+#'
+#' @examples
+#' radians(180)
+#' degrees(pi)
+#'
 radians <- function(degrees) {
   degrees / 180 * pi
 }
 
+#' @rdname radians
+#' @export
 degrees <- function(radians) {
   radians * 180 / pi
 }

@@ -11,6 +11,9 @@ Suggests:
     testthat
 RoxygenNote: 6.1.1
 Imports: 
-    purrr
+    purrr,
+    grid,
+    ggplot2,
+    scales
 URL: https://github.com/paleolimbot/ggstereo
 BugReports: https://github.com/paleolimbot/ggstereo/issues
