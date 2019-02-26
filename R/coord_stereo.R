@@ -42,8 +42,8 @@ coord_azimuth_zenith <- function(projection = c("stereographic", "orthographic")
 #'
 #' This coordinate system imagines that your data will be plotted on the bottom of a
 #' sphere, as viewed from the inside, oriented such that 0 bearing is due north
-#' and and 0 dip is horizontal. Increasing dip values plot towards the centre of
-#' the plot
+#' and and 0 plunge is horizontal. Increasing plunge values plot towards the centre of
+#' the plot, and increasing bearing values plot clockwise from north.
 #'
 #' @inheritParams coord_azimuth_zenith
 #' @export
@@ -53,16 +53,16 @@ coord_azimuth_zenith <- function(projection = c("stereographic", "orthographic")
 #'
 #' df <- data.frame(
 #'   bearing = seq(0, 4*180, length.out = 40),
-#'   dip = seq(0, 90, length.out = 40)
+#'   plunge = seq(0, 90, length.out = 40)
 #' )
 #'
-#' ggplot(df, aes(bearing, dip)) +
+#' ggplot(df, aes(bearing, plunge)) +
 #'   geom_path(col = "red") +
 #'   geom_point(col = "blue") +
-#'   coord_bearing_dip() +
+#'   coord_bearing_plunge() +
 #'   scale_x_continuous(breaks = seq(0, 330, by = 30))
 #'
-coord_bearing_dip <- function(projection = c("stereographic", "orthographic")) {
+coord_bearing_plunge <- function(projection = c("stereographic", "orthographic")) {
   projection <- match.arg(projection)
   ggplot2::ggproto(
     NULL, CoordAzimuthZenith,
@@ -78,6 +78,68 @@ coord_bearing_dip <- function(projection = c("stereographic", "orthographic")) {
       inverse = function(x) -degrees(x)
     )
   )
+}
+
+
+#' Pretty breaks for coord_bearing_plunge
+#'
+#' @param breaks,minor_breaks Where break lines and labels are drawn
+#' @param labels Labels or label function that produces labels from breaks
+#' @param ... Passed to \link[ggplot2]{scale_x_continuous}.
+#'
+#' @export
+#'
+scale_x_bearing <- function(
+  breaks = seq(0, 330, by = 30),
+  minor_breaks = seq(0, 350, by = 10), ...) {
+  ggplot2::scale_x_continuous(
+    breaks = breaks,
+    limits = c(0, 360),
+    minor_breaks = minor_breaks,
+    oob = function(x, ...) x,
+    ...
+  )
+}
+
+#' @rdname scale_x_bearing
+#' @export
+scale_x_compass <- function(breaks = c(0, 90, 180, 270), labels = c("N", "E", "S", "W"),
+                            minor_breaks = seq(0, 330, by = 30), ...) {
+  ggplot2::scale_x_continuous(
+    breaks = breaks,
+    limits = c(0, 360),
+    minor_breaks = minor_breaks,
+    labels = labels,
+    oob = function(x, ...) x,
+    ...
+  )
+}
+
+#' Pretty breaks for coord_azimuth_zenith
+#'
+#' @inheritParams scale_x_bearing
+#'
+#' @export
+#'
+scale_x_azimuth <- function(
+  breaks = seq(0, 7*pi/4, by = pi/4),
+  labels = pi_labels, ...) {
+  ggplot2::scale_x_continuous(
+    breaks = breaks,
+    limits = c(0, 2*pi),
+    labels = labels,
+    oob = function(x, ...) x,
+    ...
+  )
+}
+
+#' @rdname scale_x_azimuth
+#' @export
+pi_labels <- function(breaks, ...) {
+  labs <- paste(format(breaks / pi, ...), "pi")
+  labs[breaks == 0] <- "0"
+  labs[breaks == pi] <- gsub("^1(\\.0+)?\\s*", "", labs[breaks == pi])
+  labs
 }
 
 bearing_trans <- scales::trans_new(

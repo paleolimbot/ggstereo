@@ -39,13 +39,13 @@ library(ggstereo)
 
 df <- data.frame(
   bearing = seq(0, 4*180, length.out = 40),
-  dip = seq(0, 90, length.out = 40)
+  plunge = seq(0, 90, length.out = 40)
 )
 
-ggplot(df, aes(bearing, dip)) +
+ggplot(df, aes(bearing, plunge)) +
   geom_path(col = "red") +
   geom_point(col = "blue") +
-  coord_bearing_dip() +
-  scale_x_continuous(breaks = seq(0, 330, by = 30)) +
+  coord_bearing_plunge() +
+  scale_x_bearing() +
   theme_bw()
 ```

@@ -2,6 +2,10 @@
 
 export(CoordAzimuthZenith)
 export(coord_azimuth_zenith)
-export(coord_bearing_dip)
+export(coord_bearing_plunge)
 export(degrees)
+export(pi_labels)
 export(radians)
+export(scale_x_azimuth)
+export(scale_x_bearing)
+export(scale_x_compass)

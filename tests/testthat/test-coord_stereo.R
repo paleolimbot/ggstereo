@@ -1,17 +1,17 @@
 context("test-coord_stereo")
 
-test_that("coord_bearing_dip() works with geom_point() and geom_path()", {
+test_that("coord_bearing_plunge() works with geom_point() and geom_path()", {
   df <- data.frame(
     bearing = seq(0, 4*180, length.out = 40),
-    dip = seq(0, 90, length.out = 40)
+    plunge = seq(0, 90, length.out = 40)
   )
 
   print(
-    ggplot2::ggplot(df, ggplot2::aes(bearing, dip)) +
+    ggplot2::ggplot(df, ggplot2::aes(bearing, plunge)) +
       ggplot2::geom_path(col = "red") +
       ggplot2::geom_point(col = "blue") +
-      coord_bearing_dip(projection = "stereographic") +
-      ggplot2::scale_x_continuous(breaks = seq(0, 330, by = 30))  +
+      coord_bearing_plunge(projection = "stereographic") +
+      scale_x_bearing() +
       ggplot2::labs(caption = "spiral to the right with path and points")
   )
 
@@ -38,9 +38,7 @@ test_that("coord_azimuth_zenith() works with geom_point() and geom_path()", {
       ggplot2::geom_path(col = "red") +
       ggplot2::geom_point(col = "blue") +
       coord_azimuth_zenith(projection = "stereographic") +
-      ggplot2::scale_x_continuous(
-        breaks = seq(0, 2*pi, length.out = 13)[-13]
-      ) +
+      scale_x_azimuth() +
       ggplot2::labs(caption = "spiral to the left with path and points")
   )
 
