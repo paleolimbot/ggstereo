@@ -67,16 +67,8 @@ coord_bearing_plunge <- function(projection = c("stereographic", "orthographic")
   ggplot2::ggproto(
     NULL, CoordAzimuthZenith,
     projection = projection,
-    trans_azimuth = scales::trans_new(
-      "bearing",
-      transform = function(x) radians(90 - x),
-      inverse = function(x) 90 - degrees(x)
-    ),
-    trans_zenith = scales::trans_new(
-      "dip",
-      transform = function(x) radians(-x),
-      inverse = function(x) -degrees(x)
-    )
+    trans_azimuth = bearing_trans,
+    trans_zenith = plunge_trans
   )
 }
 
@@ -148,7 +140,7 @@ bearing_trans <- scales::trans_new(
   inverse = function(x) 90 - degrees(x)
 )
 
-dip_trans <- scales::trans_new(
+plunge_trans <- scales::trans_new(
   "dip",
   transform = function(x) radians(-x),
   inverse = function(x) -degrees(x)
